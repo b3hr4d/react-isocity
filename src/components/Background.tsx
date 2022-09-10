@@ -1,8 +1,8 @@
-import { useCallback, useEffect } from "react";
-import { useCanvasContext } from "../context/context";
+import { useCallback, useEffect } from "react"
+import { useCanvasContext } from "../context/context"
 
 interface BackgroundProps extends React.HTMLAttributes<HTMLCanvasElement> {
-  tileMap: Uint8Array;
+  tileMap: Uint8Array
 }
 
 const Background: React.FC<BackgroundProps> = ({ tileMap, ...rest }) => {
@@ -18,13 +18,13 @@ const Background: React.FC<BackgroundProps> = ({ tileMap, ...rest }) => {
     img,
     ctx,
     clear,
-  } = useCanvasContext();
+  } = useCanvasContext()
 
   const drawTile = useCallback(
     (x: number, y: number, row: number, col: number) => {
       if (img && ctx) {
-        ctx.save();
-        ctx.translate(((y - x) * tileWidth) / 2, ((x + y) * tileHeight) / 2);
+        ctx.save()
+        ctx.translate(((y - x) * tileWidth) / 2, ((x + y) * tileHeight) / 2)
         ctx.drawImage(
           img,
           row * texWidth,
@@ -35,26 +35,26 @@ const Background: React.FC<BackgroundProps> = ({ tileMap, ...rest }) => {
           -tileWidth - 2,
           texWidth,
           texHeight
-        );
-        ctx.restore();
+        )
+        ctx.restore()
       }
     },
     [ctx, tileHeight, tileWidth, texHeight, texWidth, img]
-  );
+  )
 
   useEffect(() => {
     if (ctx && img) {
-      clear();
+      clear()
 
       tileMap.forEach((t, i) => {
-        const x = Math.trunc(i / tileNumber);
-        const y = Math.trunc(i % tileNumber);
-        const row = Math.trunc(t / texWidth);
-        const col = Math.trunc(t % texWidth);
-        drawTile(x, y, row, col);
-      });
+        const x = Math.trunc(i / tileNumber)
+        const y = Math.trunc(i % tileNumber)
+        const row = Math.trunc(t / 12)
+        const col = Math.trunc(t % 12)
+        drawTile(x, y, row, col)
+      })
     }
-  }, [tileMap, drawTile, clear, ctx, img, tileNumber, texWidth]);
+  }, [tileMap, drawTile, clear, ctx, img, tileNumber])
 
   return (
     <canvas
@@ -69,7 +69,7 @@ const Background: React.FC<BackgroundProps> = ({ tileMap, ...rest }) => {
       }}
       {...rest}
     />
-  );
-};
+  )
+}
 
-export default Background;
+export default Background

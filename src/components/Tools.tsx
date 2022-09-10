@@ -1,21 +1,18 @@
-import { useMemo } from "react"
 import Tool from "./Tool"
 
 interface ToolsProps {
+  tools: [number, number][]
   rows?: number
   cols?: number
+  setSelectedTool: (tool: [number, number]) => void
+  selectedTool?: [number, number]
 }
 
-const Tools: React.FC<ToolsProps> = ({ rows = 12, cols = 6 }) => {
-  const tools = useMemo(
-    () =>
-      Array.from({ length: rows * cols }, (_, i) => [
-        Math.floor(i % rows),
-        Math.floor(i / rows),
-      ]),
-    [rows, cols]
-  )
-
+const Tools: React.FC<ToolsProps> = ({
+  tools,
+  selectedTool,
+  setSelectedTool,
+}) => {
   return (
     <div
       style={{
@@ -26,10 +23,18 @@ const Tools: React.FC<ToolsProps> = ({ rows = 12, cols = 6 }) => {
         flexWrap: "wrap",
         overflow: "auto",
         height: "20vh",
+        zIndex: 1,
+        paddingTop: "0.5rem",
       }}
     >
       {tools.map(([x, y], i) => (
-        <Tool x={x} y={y} key={i} />
+        <Tool
+          x={x}
+          y={y}
+          key={i}
+          setSelectedTool={setSelectedTool}
+          selectedTool={selectedTool}
+        />
       ))}
     </div>
   )

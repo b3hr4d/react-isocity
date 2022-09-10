@@ -1,25 +1,22 @@
-import { useCallback, useState } from "react";
-import { useCanvasContext } from "../context/context";
+import { useMemo, useState } from "react"
 
-const useTools = () => {
-  const { tileNumber } = useCanvasContext();
+const useTools = (
+  rows = 12,
+  cols = 6,
+  defaultSelectedTool?: [number, number]
+) => {
+  const [selectedTool, setSelectedTool] = useState(defaultSelectedTool)
 
-  const [tileMap, setTileMap] = useState<Uint8Array>(
-    new Uint8Array(tileNumber * tileNumber)
-  );
+  const tools: [number, number][] = useMemo(
+    () =>
+      Array.from({ length: rows * cols }, (_, i) => [
+        Math.floor(i / rows),
+        Math.floor(i % rows),
+      ]),
+    [rows, cols]
+  )
 
-  const tileChanger = useCallback(
-    (row: number, col: number, value: number) => {
-      setTileMap((prev) => {
-        const newTileMap = new Uint8Array(prev);
-        newTileMap[row * tileNumber + col] = value;
-        return newTileMap;
-      });
-    },
-    [tileNumber]
-  );
+  return { tools, rows, cols, selectedTool, setSelectedTool }
+}
 
-  return { tileChanger, tileMap };
-};
-
-export default useTools;
+export default useTools

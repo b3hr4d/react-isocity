@@ -3,10 +3,19 @@ import { useCanvasContext } from "../context/context"
 
 interface ForegroundProps extends React.HTMLAttributes<HTMLCanvasElement> {
   tileChanger: (row: number, col: number, value: number) => void
+  setSelectedTool: (tool: [number, number]) => void
+  selectedTool?: [number, number]
+  rows: number
 }
 
-const Foreground: React.FC<ForegroundProps> = ({ tileChanger, ...rest }) => {
-  const { ctx, width, height, texWidth, tileHeight, tileWidth, tileNumber } =
+const Foreground: React.FC<ForegroundProps> = ({
+  tileChanger,
+  setSelectedTool,
+  selectedTool,
+  rows,
+  ...rest
+}) => {
+  const { ctx, width, height, tileHeight, tileWidth, tileNumber } =
     useCanvasContext()
 
   const [fctx, setFctx] = useState<CanvasRenderingContext2D>()
@@ -35,13 +44,19 @@ const Foreground: React.FC<ForegroundProps> = ({ tileChanger, ...rest }) => {
       e.preventDefault()
       const [row, col] = getPosition(e)
 
-      if (row >= 0 && row < tileNumber && col >= 0 && col < tileNumber) {
-        const zero = e.button === 2 ? 0 : 1
-        const one = e.button === 2 ? 0 : 0
-        tileChanger(row, col, zero * texWidth + one)
+      if (
+        selectedTool &&
+        row >= 0 &&
+        row < tileNumber &&
+        col >= 0 &&
+        col < tileNumber
+      ) {
+        const zero = selectedTool[1]
+        const one = selectedTool[0]
+        tileChanger(row, col, zero * rows + one)
       }
     },
-    [getPosition, texWidth, tileNumber, tileChanger]
+    [getPosition, selectedTool, rows, tileNumber, tileChanger]
   )
 
   const drawForeTile = useCallback(

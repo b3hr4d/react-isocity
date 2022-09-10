@@ -52,6 +52,7 @@ export const useCanvasContext = () => useContext(CanvasContext)
 interface CanvasProps
   extends React.HTMLAttributes<HTMLCanvasElement>,
     Partial<CanvasType> {
+  defaultSelectedTool?: [number, number]
   texture: string
   scale?: number
   min?: number
@@ -64,6 +65,7 @@ export const CanvasProvider: React.FC<CanvasProps> = ({
   min = 0.1,
   max = 2,
   scale = 1,
+  defaultSelectedTool,
   ...rest
 }) => {
   const { tileNumber, chance, tileHeight, tileWidth, texWidth, texHeight } = {
@@ -75,17 +77,6 @@ export const CanvasProvider: React.FC<CanvasProps> = ({
     width: tileWidth * tileNumber,
     height: tileHeight * tileNumber + tileHeight * 3,
   })
-
-  const changeSize = useCallback(
-    (value: number) => {
-      const sc = Math.min(Math.max(0.5, value * 0.1), 1)
-      setSize({
-        width: tileWidth * tileNumber * sc,
-        height: tileHeight * tileNumber * sc + tileHeight * 3,
-      })
-    },
-    [tileHeight, tileNumber, tileWidth]
-  )
 
   const [img, setImg] = useState<HTMLImageElement>()
 
@@ -134,17 +125,17 @@ export const CanvasProvider: React.FC<CanvasProps> = ({
     <CanvasContext.Provider
       value={{
         canvasRef,
-        ctx,
         clear,
+        ctx,
         img,
         width,
+        chance,
         height,
-        tileHeight,
-        tileWidth,
         texWidth,
         texHeight,
+        tileWidth,
+        tileHeight,
         tileNumber,
-        chance,
       }}
     >
       {children}

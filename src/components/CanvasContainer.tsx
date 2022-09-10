@@ -5,9 +5,17 @@ import useTileMap from "../hooks/useTileMap"
 import Background from "./Background"
 import Foreground from "./Foreground"
 
-interface AppProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface AppProps extends React.HTMLAttributes<HTMLDivElement> {
+  setSelectedTool: (tool: [number, number]) => void
+  selectedTool?: [number, number]
+  rows: number
+}
 
-const CanvasContainer: React.FC<AppProps> = () => {
+const CanvasContainer: React.FC<AppProps> = ({
+  setSelectedTool,
+  selectedTool,
+  rows,
+}) => {
   const { current: scale } = useRef(window.innerWidth / 1200)
   const { width, height } = useCanvasContext()
 
@@ -32,6 +40,7 @@ const CanvasContainer: React.FC<AppProps> = () => {
           position: "relative",
           height: "80vh",
           width: "100vw",
+          zIndex: 0,
         }}
         contentStyle={{
           position: "absolute",
@@ -40,7 +49,12 @@ const CanvasContainer: React.FC<AppProps> = () => {
         }}
       >
         <Background tileMap={tileMap} />
-        <Foreground tileChanger={tileChanger} />
+        <Foreground
+          rows={rows}
+          tileChanger={tileChanger}
+          setSelectedTool={setSelectedTool}
+          selectedTool={selectedTool}
+        />
       </TransformComponent>
     </TransformWrapper>
   )
