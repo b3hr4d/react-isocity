@@ -1,0 +1,42 @@
+{
+  "name": "react-isocity",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "b3hr4d",
+    "email": "behradmusiclove@yahoo.com"
+  },
+  "scripts": {
+    "start": "webpack-dev-server --open --mode development --hot",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:b3hr4d/react-isocity.git"
+  },
+  "peerDependencies": {
+    "react": "^18.0.18"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-zoom-pan-pinch": "^2.1.3",
+    "webpack": "^5.74.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.13",
+    "@babel/preset-env": "^7.18.10",
+    "@babel/preset-react": "^7.18.6",
+    "@types/react": "^18.0.18",
+    "@types/react-dom": "^18.0.6",
+    "babel-loader": "^8.2.5",
+    "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.8.2",
+    "url-loader": "^4.1.1",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.10.1"
+  }
+}
